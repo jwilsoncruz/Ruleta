@@ -56,6 +56,8 @@ body.full main{grid-template-columns:1fr}body.full aside,body.full header .row{d
 .ir{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line)}.ir .in{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .th{width:38px;height:38px;border-radius:50%;background:#ffffff1a center/cover;flex:none;border:2px solid var(--line)}
 .btn.sm{padding:6px 10px;font-size:13px}
+body:not(.cfg) aside{display:none}body:not(.cfg) main{grid-template-columns:1fr}
+body:not(.cfg) .wheelwrap{width:min(100%,800px,calc(100vh - 230px));min-width:280px}
 #go{font-size:18px;padding:13px 34px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -64,7 +66,7 @@ body.full main{grid-template-columns:1fr}body.full aside,body.full header .row{d
 <main>
 <header>
 <div style="flex:1;min-width:240px"><input id="title" value="¡Gran sorteo!" aria-label="Título del sorteo" maxlength="60"><input id="sub" placeholder="Fecha, lugar o detalles del evento" aria-label="Detalles del evento" maxlength="90"></div>
-<div class="row"><button class="btn ghost" id="fs">Pantalla completa</button></div>
+<div class="row"><button class="btn" id="cfg">Configurar</button><button class="btn ghost" id="fs">Pantalla completa</button></div>
 </header>
 
 <section class="stage">
@@ -88,7 +90,7 @@ body.full main{grid-template-columns:1fr}body.full aside,body.full header .row{d
 <button class="btn ghost" id="clr">Vaciar</button>
 </div>
 </div>
-<div class="card"><h2>Imagen de cada casilla</h2><div id="imgs"></div><small>Agrega la foto o ícono de cada premio; se muestra dentro de su casilla.</small><label class="opt">Mostrar también el texto <input type="checkbox" id="showtxt" checked></label></div>
+<div class="card"><h2>Imagen de cada casilla</h2><div id="imgs"></div><small>Agrega la foto o ícono de cada premio; se muestra dentro de su casilla.</small><label class="opt">Contenido de casillas <select id="show"><option value="ambos">Texto e imagen</option><option value="img">Solo imagen</option><option value="txt">Solo texto</option></select></label></div>
 <div class="card"><h2>Centro de la ruleta</h2><div class="row"><label class="btn ghost" style="cursor:pointer">Subir logo<input type="file" id="logo" accept="image/*" hidden></label><button class="btn ghost" id="nologo">Quitar logo</button></div><label class="opt">Texto del botón <input id="hubtxt" maxlength="10"></label><label class="opt">Color del centro <input type="color" id="hubc"></label><small>Con logo, el centro muestra tu marca y sigue sirviendo para girar.</small></div>
 <div class="card">
 <h2>Ajustes</h2>
@@ -121,7 +123,7 @@ feria:['#ff6b57','#ffc83d','#1fb5a8','#7a5cff','#ff8fb1','#3da5ff'],
 selva:['#1f8a5b','#f2c94c','#e2603a','#0f5d6b','#9ccc65','#c0392b'],
 neon:['#ff2e93','#00d1ff','#ffe600','#8b5cf6','#00e08a','#ff7a00'],
 dulce:['#f7a8b8','#ffd6a5','#b5ead7','#c7ceea','#fdffb6','#a0c4ff']};
-var S={title:'¡Gran sorteo!',items:['Ana','Luis','María','Carlos','Sofía','Diego'],pal:'feria',dur:6,rem:false,snd:true,hist:[],sub:'',mode:'nombres',imgs:{},logo:'',hubtxt:'GIRAR',hubc:'#ff6b57',showtxt:true};
+var S={title:'¡Gran sorteo!',items:['Ana','Luis','María','Carlos','Sofía','Diego'],pal:'feria',dur:6,rem:false,snd:true,hist:[],sub:'',mode:'nombres',imgs:{},logo:'',hubtxt:'GIRAR',hubc:'#ff6b57',showtxt:true,show:'ambos'};
 try{var raw=localStorage.getItem('ruleta-v1');if(raw)Object.assign(S,JSON.parse(raw))}catch(e){}
 function save(){try{localStorage.setItem('ruleta-v1',JSON.stringify(S))}catch(e){}}
 var cv=$('c'),ctx=cv.getContext('2d'),W=1200,R=W/2,rot=0,spinning=false,segs=[];
@@ -144,9 +146,9 @@ ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,r,s.a0,s.a1);ctx.closePath();ctx.fil
 ctx.save();ctx.rotate((s.a0+s.a1)/2);ctx.textAlign='right';ctx.textBaseline='middle';
 var light=lum(s.c)>.6;ctx.fillStyle=light?'#2b1d0e':'#fff';
 var size=Math.max(22,Math.min(54,(s.a1-s.a0)*r*.34)),txt=s.t;ctx.font='800 '+size+'px Bricolage Grotesque,sans-serif';
-var im=getImg(s.t),dd=im?Math.min(120,Math.max(50,(s.a1-s.a0)*r*.55)):0,max=r*.68-dd;while(ctx.measureText(txt).width>max&&txt.length>3){txt=txt.slice(0,-2)}if(txt!==s.t)txt=txt.trim()+'…';
-if(S.showtxt||!im)ctx.fillText(txt,r-34-(dd?dd+14:0),0);
-if(im){var cx=r-30-dd/2,q=Math.max(dd/im.width,dd/im.height);ctx.save();ctx.beginPath();ctx.arc(cx,0,dd/2,0,7);ctx.clip();ctx.drawImage(im,cx-im.width*q/2,-im.height*q/2,im.width*q,im.height*q);ctx.restore();ctx.beginPath();ctx.arc(cx,0,dd/2,0,7);ctx.lineWidth=5;ctx.strokeStyle='#fff';ctx.stroke()}
+var im=S.show==='txt'?null:getImg(s.t),only=im&&S.show==='img',dd=im?(only?Math.min(r*.4,Math.max(60,(s.a1-s.a0)*r*.55)):Math.min(120,Math.max(50,(s.a1-s.a0)*r*.55))):0,max=r*.68-dd;while(ctx.measureText(txt).width>max&&txt.length>3){txt=txt.slice(0,-2)}if(txt!==s.t)txt=txt.trim()+'…';
+if(!only)ctx.fillText(txt,r-34-(dd?dd+14:0),0);
+if(im){var cx=only?r*.62:r-30-dd/2,q=Math.max(dd/im.width,dd/im.height);ctx.save();ctx.beginPath();ctx.arc(cx,0,dd/2,0,7);ctx.clip();ctx.drawImage(im,cx-im.width*q/2,-im.height*q/2,im.width*q,im.height*q);ctx.restore();ctx.beginPath();ctx.arc(cx,0,dd/2,0,7);ctx.lineWidth=5;ctx.strokeStyle='#fff';ctx.stroke()}
 ctx.restore()});
 ctx.restore()}
 function lum(h){var n=parseInt(h.slice(1,7),16);return (0.299*(n>>16)+0.587*((n>>8)&255)+0.114*(n&255))/255}
@@ -202,15 +204,18 @@ if(e.code==='Space'&&!/TEXTAREA|INPUT|BUTTON/.test(document.activeElement.tagNam
 $('fs').onclick=function(){document.body.classList.toggle('full');var on=document.body.classList.contains('full');this.textContent=on?'Salir':'Pantalla completa';try{if(on)document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();else if(document.fullscreenElement)document.exitFullscreen()}catch(e){}};
 Object.keys(PAL).forEach(function(k){var b=document.createElement('button');b.title=k;b.setAttribute('aria-label','Estilo '+k);b.style.background='conic-gradient('+PAL[k].slice(0,4).map(function(c,i){return c+' '+i*25+'% '+(i+1)*25+'%'}).join(',')+')';b.setAttribute('aria-pressed',S.pal===k);b.onclick=function(){S.pal=k;[].forEach.call($('sw').children,function(x){x.setAttribute('aria-pressed',x===b)});parse();draw();save()};$('sw').appendChild(b)});
 parse();draw();renderHist();
-$('mode').value=S.mode;$('sub').value=S.sub;$('hubtxt').value=S.hubtxt;$('hubc').value=S.hubc;$('showtxt').checked=S.showtxt;
+$('mode').value=S.mode;$('sub').value=S.sub;$('hubtxt').value=S.hubtxt;$('hubc').value=S.hubc;$('show').value=S.show;
 $('mode').onchange=function(){S.mode=this.value;applyMode();save()};
 $('sub').oninput=function(){S.sub=this.value;save()};
 $('hubtxt').oninput=function(){S.hubtxt=this.value;applyHub();save()};
 $('hubc').oninput=function(){S.hubc=this.value;applyHub();save()};
-$('showtxt').onchange=function(){S.showtxt=this.checked;draw();save()};
+$('show').onchange=function(){S.show=this.value;draw();save()};
 $('logo').onchange=function(){var f=this.files[0];if(f)shrink(f,420,'image/png',function(u){S.logo=u;applyHub();save()})};
 $('nologo').onclick=function(){S.logo='';applyHub();save()};
 $('go').onclick=spin;
+function view(){var c=location.hash==='#configurar';document.body.classList.toggle('cfg',c);$('cfg').textContent=c?'Ver ruleta':'Configurar'}
+$('cfg').onclick=function(){location.hash=document.body.classList.contains('cfg')?'ruleta':'configurar'};
+window.addEventListener('hashchange',view);view();
 applyHub();applyMode();renderImgs();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
 })();

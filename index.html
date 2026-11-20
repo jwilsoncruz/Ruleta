@@ -154,6 +154,40 @@ body::before{background:conic-gradient(from 200deg at 50% 0,transparent 0 20%,rg
 .win{box-shadow:0 0 50px rgba(0,240,255,.55),0 0 110px rgba(161,77,255,.45),0 30px 60px rgba(0,0,0,.65),inset 0 2px 0 rgba(255,255,255,.18)}
 .win .n{text-shadow:0 3px 0 #0a5c78,0 6px 0 #083e56,0 12px 18px rgba(0,0,0,.6),0 0 30px rgba(0,240,255,.85)}
 /* ================== fin colores vivos + 3D ================== */
+
+/* ===================== NEON STAGE · LED del anillo + adaptable ===================== */
+/* Luces LED con destellos sobre el anillo fijo */
+#leds{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;--d:2.4s}
+#leds .led{transform-box:fill-box;transform-origin:center;animation:ns-led var(--d) linear infinite;animation-delay:calc(var(--i)*var(--d)/-24)}
+#leds .lh{fill:currentColor;opacity:.5}
+#leds .lb{fill:#fff;stroke:currentColor;stroke-width:5}
+#leds .led:nth-child(3n+1){color:#00f0ff}
+#leds .led:nth-child(3n+2){color:#ff1fa9}
+#leds .led:nth-child(3n){color:#ffe600}
+@keyframes ns-led{0%,100%{opacity:.22;transform:scale(.85)}10%,32%{opacity:1;transform:scale(1.25)}50%{opacity:.5;transform:scale(1)}}
+.wheelwrap:has(#hub:disabled) #leds{--d:.8s}
+
+/* Adaptable: sin desplazamiento lateral */
+html{overflow-x:hidden}
+main{overflow-x:clip}
+body::before{inset:-20% 0 auto}
+.wheelwrap{container-type:inline-size}
+#hub{font-size:clamp(9px,2.6vw,20px);font-size:clamp(8px,3.5cqw,24px);letter-spacing:0;line-height:1}
+input[type=range]{max-width:46%}
+@media (max-height:520px) and (min-width:560px){
+main{padding:10px;gap:10px}
+#title{font-size:clamp(16px,3vw,26px)}#sub{font-size:14px;padding:2px 0}
+body:not(.cfg) .wheelwrap{width:min(100%,calc(100vh - 150px));min-width:220px}
+.stage{gap:8px}.stage small{display:none}
+#go{padding:9px 24px;font-size:13px}
+}
+@media (max-width:560px){
+.win{padding:24px 16px}
+.win .row{flex-direction:column}.win .row .btn{width:100%}
+#modal{padding:12px}
+.btn{padding:10px 14px}
+}
+/* ================== fin LED + adaptable ================== */
 </style>
 </head>
 <body>
@@ -167,6 +201,7 @@ body::before{background:conic-gradient(from 200deg at 50% 0,transparent 0 20%,rg
 <div class="wheelwrap">
 <svg id="pointer" viewBox="0 0 54 66"><path d="M27 64 5 22A24 24 0 1 1 49 22Z" fill="#ff6b57" stroke="#ffc83d" stroke-width="4"/><circle cx="27" cy="22" r="8" fill="#fff7e6"/></svg>
 <canvas id="c" width="1200" height="1200" role="img" aria-label="Ruleta"></canvas>
+<svg id="leds" viewBox="0 0 1200 1200" aria-hidden="true"><g class="led" style="--i:0"><circle class="lh" cx="1166.0" cy="600.0" r="24"/><circle class="lb" cx="1166.0" cy="600.0" r="11"/></g><g class="led" style="--i:1"><circle class="lh" cx="1146.7" cy="746.5" r="24"/><circle class="lb" cx="1146.7" cy="746.5" r="11"/></g><g class="led" style="--i:2"><circle class="lh" cx="1090.2" cy="883.0" r="24"/><circle class="lb" cx="1090.2" cy="883.0" r="11"/></g><g class="led" style="--i:3"><circle class="lh" cx="1000.2" cy="1000.2" r="24"/><circle class="lb" cx="1000.2" cy="1000.2" r="11"/></g><g class="led" style="--i:4"><circle class="lh" cx="883.0" cy="1090.2" r="24"/><circle class="lb" cx="883.0" cy="1090.2" r="11"/></g><g class="led" style="--i:5"><circle class="lh" cx="746.5" cy="1146.7" r="24"/><circle class="lb" cx="746.5" cy="1146.7" r="11"/></g><g class="led" style="--i:6"><circle class="lh" cx="600.0" cy="1166.0" r="24"/><circle class="lb" cx="600.0" cy="1166.0" r="11"/></g><g class="led" style="--i:7"><circle class="lh" cx="453.5" cy="1146.7" r="24"/><circle class="lb" cx="453.5" cy="1146.7" r="11"/></g><g class="led" style="--i:8"><circle class="lh" cx="317.0" cy="1090.2" r="24"/><circle class="lb" cx="317.0" cy="1090.2" r="11"/></g><g class="led" style="--i:9"><circle class="lh" cx="199.8" cy="1000.2" r="24"/><circle class="lb" cx="199.8" cy="1000.2" r="11"/></g><g class="led" style="--i:10"><circle class="lh" cx="109.8" cy="883.0" r="24"/><circle class="lb" cx="109.8" cy="883.0" r="11"/></g><g class="led" style="--i:11"><circle class="lh" cx="53.3" cy="746.5" r="24"/><circle class="lb" cx="53.3" cy="746.5" r="11"/></g><g class="led" style="--i:12"><circle class="lh" cx="34.0" cy="600.0" r="24"/><circle class="lb" cx="34.0" cy="600.0" r="11"/></g><g class="led" style="--i:13"><circle class="lh" cx="53.3" cy="453.5" r="24"/><circle class="lb" cx="53.3" cy="453.5" r="11"/></g><g class="led" style="--i:14"><circle class="lh" cx="109.8" cy="317.0" r="24"/><circle class="lb" cx="109.8" cy="317.0" r="11"/></g><g class="led" style="--i:15"><circle class="lh" cx="199.8" cy="199.8" r="24"/><circle class="lb" cx="199.8" cy="199.8" r="11"/></g><g class="led" style="--i:16"><circle class="lh" cx="317.0" cy="109.8" r="24"/><circle class="lb" cx="317.0" cy="109.8" r="11"/></g><g class="led" style="--i:17"><circle class="lh" cx="453.5" cy="53.3" r="24"/><circle class="lb" cx="453.5" cy="53.3" r="11"/></g><g class="led" style="--i:18"><circle class="lh" cx="600.0" cy="34.0" r="24"/><circle class="lb" cx="600.0" cy="34.0" r="11"/></g><g class="led" style="--i:19"><circle class="lh" cx="746.5" cy="53.3" r="24"/><circle class="lb" cx="746.5" cy="53.3" r="11"/></g><g class="led" style="--i:20"><circle class="lh" cx="883.0" cy="109.8" r="24"/><circle class="lb" cx="883.0" cy="109.8" r="11"/></g><g class="led" style="--i:21"><circle class="lh" cx="1000.2" cy="199.8" r="24"/><circle class="lb" cx="1000.2" cy="199.8" r="11"/></g><g class="led" style="--i:22"><circle class="lh" cx="1090.2" cy="317.0" r="24"/><circle class="lb" cx="1090.2" cy="317.0" r="11"/></g><g class="led" style="--i:23"><circle class="lh" cx="1146.7" cy="453.5" r="24"/><circle class="lb" cx="1146.7" cy="453.5" r="11"/></g></svg>
 <button id="hub">GIRAR</button>
 </div>
 <button class="btn" id="go">Girar la ruleta</button>
@@ -193,6 +228,8 @@ body::before{background:conic-gradient(from 200deg at 50% 0,transparent 0 20%,rg
 <label class="opt">Duración del giro <input type="range" id="dur" min="3" max="12" value="6"><span id="durv">6 s</span></label>
 <label class="opt">Quitar al ganador <input type="checkbox" id="rem"></label>
 <label class="opt">Sonido <input type="checkbox" id="snd" checked></label>
+<label class="opt">Volver a la ruleta <input type="range" id="back" min="0" max="60" value="10"><span id="backv">10 s</span></label>
+<small>Segundos que se muestra el ganador antes de volver solo a la ruleta (0 = no vuelve solo).</small>
 </div>
 <div class="card">
 <h2 id="ht">Ganadores</h2>
@@ -217,7 +254,7 @@ feria:['#ff3b30','#ffd60a','#00c7be','#7c3aed','#ff2d92','#0a84ff'],
 selva:['#00c853','#ffd600','#ff5722','#00acc1','#76ff03','#e91e63'],
 neon:['#ff1f8f','#00e5ff','#fff200','#9d4dff','#00ff9d','#ff6a00'],
 dulce:['#ff8fab','#ffc15e','#5ef2c0','#a78bfa','#fff275','#5eb7ff']};
-var S={title:'¡Gran sorteo!',items:['Ana','Luis','María','Carlos','Sofía','Diego'],pal:'feria',dur:6,rem:false,snd:true,hist:[],sub:'',mode:'nombres',imgs:{},logo:'',hubtxt:'GIRAR',hubc:'#ff1fa9',showtxt:true,show:'ambos'};
+var S={title:'¡Gran sorteo!',items:['Ana','Luis','María','Carlos','Sofía','Diego'],pal:'feria',dur:6,rem:false,snd:true,hist:[],sub:'',mode:'nombres',imgs:{},logo:'',hubtxt:'GIRAR',hubc:'#ff1fa9',showtxt:true,show:'ambos',back:10};
 try{var raw=localStorage.getItem('ruleta-v1');if(raw)Object.assign(S,JSON.parse(raw))}catch(e){}
 function save(){try{localStorage.setItem('ruleta-v1',JSON.stringify(S))}catch(e){}}
 var cv=$('c'),ctx=cv.getContext('2d'),W=1200,R=W/2,rot=0,spinning=false,segs=[];
@@ -260,10 +297,10 @@ var start=rot,dur=S.dur*1000,extra=(6+Math.random()*4|0)*2*Math.PI+Math.random()
 var i=at();if(i!==last){last=i;beep(700+Math.random()*120,.05);var p=$('pointer');p.classList.remove('tick');void p.offsetWidth;p.classList.add('tick')}
 if(t<1)requestAnimationFrame(f);else{spinning=false;$('hub').disabled=false;win(at())}})(t0)}
 function toast(){alert('Agrega al menos 2 participantes para girar.')}
-var current=null;
-function win(i){current=segs[i];$('wn').textContent=current.t;var wi=$('wi'),wu=S.imgs[current.t];if(wu){wi.src=wu;wi.style.display='block'}else wi.style.display='none';$('modal').classList.add('on');$('again').focus();fanfare();confetti();
+var current=null,backT=null;
+function win(i){current=segs[i];$('wn').textContent=current.t;var wi=$('wi'),wu=S.imgs[current.t];if(wu){wi.src=wu;wi.style.display='block'}else wi.style.display='none';$('modal').classList.add('on');$('again').focus();fanfare();confetti();clearTimeout(backT);if(S.back>0)backT=setTimeout(function(){if($('modal').classList.contains('on'))closeM(true)},S.back*1000);
 S.hist.unshift({n:current.t,h:new Date().toLocaleTimeString('es-BO',{hour:'2-digit',minute:'2-digit'})});S.hist=S.hist.slice(0,50);save();renderHist()}
-function closeM(rm){$('modal').classList.remove('on');if(rm&&S.rem&&current){var k=S.items.findIndex(function(x){return x.trim().replace(/\s*[xX×]\s*\d{1,2}$/,'')===current.t});if(k>-1)S.items.splice(k,1);$('list').value=S.items.join('\n');parse();draw();renderImgs();save()}}
+function closeM(rm){clearTimeout(backT);$('modal').classList.remove('on');if(rm&&S.rem&&current){var k=S.items.findIndex(function(x){return x.trim().replace(/\s*[xX×]\s*\d{1,2}$/,'')===current.t});if(k>-1)S.items.splice(k,1);$('list').value=S.items.join('\n');parse();draw();renderImgs();save()}}
 // confeti
 var fx=$('fx'),fc=fx.getContext('2d'),ps=[],run=false;
 function confetti(){fx.width=innerWidth;fx.height=innerHeight;var cols=PAL.neon.concat(PAL.feria);
@@ -285,6 +322,8 @@ $('title').oninput=function(){S.title=this.value;save()};
 $('dur').oninput=function(){S.dur=+this.value;$('durv').textContent=S.dur+' s';save()};
 $('rem').onchange=function(){S.rem=this.checked;save()};
 $('snd').onchange=function(){S.snd=this.checked;save()};
+function showBack(){$('backv').textContent=S.back>0?S.back+' s':'No'}
+$('back').value=S.back;showBack();$('back').oninput=function(){S.back=+this.value;showBack();save()};
 $('shuf').onclick=function(){var a=$('list').value.split('\n').filter(function(x){return x.trim()});for(var i=a.length-1;i>0;i--){var j=Math.random()*(i+1)|0,t=a[i];a[i]=a[j];a[j]=t}$('list').value=a.join('\n');sync()};
 $('demo').onclick=function(){$('list').value=['Premio mayor x2','Cena para dos','Descuento 20%','Gift card','Intenta de nuevo','Sorpresa'].join('\n');sync()};
 $('clr').onclick=function(){$('list').value='';sync()};

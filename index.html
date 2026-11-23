@@ -85,6 +85,8 @@ header #title{font-size:clamp(22px,4vw,38px)}
 @keyframes bob{50%{transform:translateY(-7px) scale(1.05)}}
 @keyframes swap{from{transform:scale(.92);opacity:.25}}
 #ver{position:fixed;right:10px;bottom:calc(6px + env(safe-area-inset-bottom,0px));font-size:11px;color:var(--mute);opacity:.75;pointer-events:none;z-index:1}
+html{scrollbar-gutter:stable}
+body:not(.cfg){overflow:hidden}
 .tbar{height:6px;border-radius:6px;background:#ffffff22;margin-top:18px;overflow:hidden}
 .tbar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ff6b57,#ffc83d)}
 #modal{overflow:hidden}

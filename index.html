@@ -71,14 +71,14 @@ body.full main{grid-template-columns:1fr}body.full aside{display:none}body.full 
 body:not(.cfg) aside{display:none}body:not(.cfg) main{grid-template-columns:1fr}
 body:not(.cfg) .wheelwrap{width:min(100%,800px,calc(100vh - 310px));width:min(100%,800px,calc(100dvh - 310px));min-width:200px}
 body:not(.cfg) main{padding-top:10px;padding-bottom:10px;gap:10px}
-body #hype{font-size:clamp(19px,4.4vw,46px)}
+body #hype{font-size:clamp(19px,3.4vw,36px);min-height:1.3em}
 header #title{font-size:clamp(22px,4vw,38px)}
 @media (max-width:860px){body:not(.cfg) .wheelwrap{width:min(100%,calc(100vh - 300px));width:min(100%,calc(100dvh - 300px))}body #hype{min-height:2.3em}.deco span{font-size:24px}header .row{order:-1;width:100%;justify-content:flex-end}header .btn{padding:7px 12px;font-size:13px}.stage>small{display:none}}
 @media (max-height:560px){body:not(.cfg) .wheelwrap{width:min(100%,calc(100vh - 120px));width:min(100%,calc(100dvh - 120px))}body #hype,.stage>small,#go,.deco{display:none!important}}
 #go{font-size:18px;padding:13px 34px;animation:pulse 1.6s ease-in-out infinite}
-@keyframes pulse{50%{transform:scale(1.07);box-shadow:0 0 0 12px #ffc83d33}}
+@keyframes pulse{50%{box-shadow:0 0 0 12px #ffc83d33}}
 #hype{text-align:center;font-weight:800;font-size:clamp(26px,5.5vw,52px);line-height:1.1;max-width:100%;min-height:1.2em}
-#hype span{display:inline-block;background:linear-gradient(90deg,#ff6b57,#ffc83d,#1fb5a8,#7a5cff,#ff8fb1,#ff6b57);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 #0005);animation:flow 4s linear infinite,bob .9s ease-in-out infinite}
+#hype span{display:inline-block;background:linear-gradient(90deg,#ff6b57,#ffc83d,#1fb5a8,#7a5cff,#ff8fb1,#ff6b57);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 0 #0005);animation:flow 4s linear infinite}
 #hype.in{animation:swap .45s ease-out}
 @keyframes flow{to{background-position:300% 0}}
 @keyframes bob{50%{transform:translateY(-7px) scale(1.05)}}
@@ -99,8 +99,8 @@ header #title{font-size:clamp(22px,4vw,38px)}
 .wheelwrap::before{content:"";position:absolute;inset:-7%;border-radius:50%;background:conic-gradient(#ff6b5788,#ffc83d88,#1fb5a888,#7a5cff88,#ff8fb188,#ff6b5788);filter:blur(36px);z-index:0;animation:halo 14s linear infinite}
 @keyframes halo{to{transform:rotate(360deg)}}
 .wheelwrap::after{content:"";position:absolute;left:10%;right:10%;bottom:-6%;height:8%;border-radius:50%;background:radial-gradient(#000b,#0000 70%);filter:blur(6px);z-index:0}
-.deco span{position:absolute;font-size:clamp(26px,5vw,48px);animation:fl 3.2s ease-in-out infinite;filter:drop-shadow(0 4px 4px #0006);pointer-events:none;z-index:4}
-@keyframes fl{50%{transform:translateY(-14px) rotate(9deg)}}
+.deco span{position:absolute;font-size:clamp(26px,5vw,48px);animation:fl 5s ease-in-out infinite;filter:drop-shadow(0 4px 4px #0006);pointer-events:none;z-index:4}
+@keyframes fl{50%{transform:translateY(-6px) rotate(4deg)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -277,7 +277,7 @@ $('hypeon').onchange=function(){S.hype=this.checked;save();if(S.hype)nextHype();
 nextHype();setInterval(nextHype,3200);
 var lastT=0;(function loop(t){tL=t/170;if(!spinning&&t-lastT>33){lastT=t;draw()}requestAnimationFrame(loop)})(0);
 var st=document.querySelector('.stage'),ww=document.querySelector('.wheelwrap');
-st.addEventListener('pointermove',function(e){if(e.pointerType==='touch')return;var b=ww.getBoundingClientRect(),x=Math.max(-.7,Math.min(.7,(e.clientX-b.left)/b.width-.5)),y=Math.max(-.7,Math.min(.7,(e.clientY-b.top)/b.height-.5));ww.style.transform='perspective(1100px) rotateX('+(-y*12).toFixed(1)+'deg) rotateY('+(x*12).toFixed(1)+'deg)'});
+st.addEventListener('pointermove',function(e){if(e.pointerType==='touch')return;var b=ww.getBoundingClientRect(),x=Math.max(-.7,Math.min(.7,(e.clientX-b.left)/b.width-.5)),y=Math.max(-.7,Math.min(.7,(e.clientY-b.top)/b.height-.5));void 0});
 st.addEventListener('pointerleave',function(){ww.style.transform=''});
 applyHub();applyMode();renderImgs();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
